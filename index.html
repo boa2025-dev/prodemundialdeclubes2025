@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prode Mundial de Clubes - Inicio de Sesión</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #001f3f, #0074D9);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-box {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-box h2 {
+      margin-bottom: 25px;
+      color: #FFD700;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background-color: #FFD700;
+      color: #000;
+      border: none;
+      font-weight: bold;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-box button:hover {
+      background-color: #FFC300;
+    }
+
+    #mensaje {
+      margin-top: 15px;
+      color: #ff4444;
+      font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+      .login-box {
+        margin: 0 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Login - Prode Mundial de Clubes</h2>
+    <input type="text" id="username" placeholder="Nombre de usuario" autocomplete="username">
+    <input type="password" id="password" placeholder="Contraseña" autocomplete="current-password">
+    <button onclick="login()">Iniciar sesión</button>
+    <div id="mensaje"></div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbzsnfN7NiObmFF3bTMF4pa9CKGe3gdTz56DJA3duhe5iE07n42VRzP5v2Ou8CT18EZQxQ/exec";
+
+    async function login() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const mensaje = document.getElementById('mensaje');
+      mensaje.textContent = "";
+
+      if (!user || !pass) {
+        mensaje.textContent = "Por favor completá ambos campos.";
+        return;
+      }
+
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+
+        const usuarioValido = data.find(u => u.usuario === user && u.contraseña === pass);
+
+        if (usuarioValido) {
+          window.location.href = `${user}.html`;
+        } else {
+          mensaje.textContent = "Usuario o contraseña incorrectos.";
+        }
+      } catch (error) {
+        console.error("Error al conectar con la API:", error);
+        mensaje.textContent = "Error al conectar con el servidor.";
+      }
+    }
+  </script>
+</body>
+</html>
