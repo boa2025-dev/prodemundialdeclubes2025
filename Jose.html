@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Hola - Prode 2025</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <div class="contenido">
+    <h1>Bienvenido al portal del Prode del Mundial de Clubes 2025</h1>
+    <h2>Mis puntos</h2>
+    <div class="puntos" id="puntos">Cargando...</div>
+  </div>
+
+  <script>
+    const usuario = "Jose";  // Nombre del usuario
+
+    const API_PUNTOS = "https://script.google.com/macros/s/AKfycbwC3tCy6EyHaXRDDnEjJg552er8WYp2F1ghIvP1VDnDEntRNXmJqFzJ4Ut_KEj-OAw/exec";
+
+    async function obtenerPuntos() {
+      try {
+        const response = await fetch(API_PUNTOS);
+        const data = await response.json();
+        const fila = data.find(u => u.usuario === usuario);
+
+        if (fila) {
+          document.getElementById("puntos").textContent = fila.puntos + " puntos";
+        } else {
+          document.getElementById("puntos").textContent = "Usuario no encontrado";
+        }
+      } catch (e) {
+        document.getElementById("puntos").textContent = "Error al cargar";
+        console.error("Error:", e);
+      }
+    }
+
+    obtenerPuntos();
+  </script>
+</body>
+</html>
